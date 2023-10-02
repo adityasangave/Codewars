@@ -4,8 +4,16 @@
   "description": "Codewars backend",
   "main": "index.js",
   "scripts": {
+    "dev": "NODE_ENV=development nodemon index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Aditya",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
