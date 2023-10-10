@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
 const User = mongoose.Schema({
     name :{
@@ -11,7 +12,11 @@ const User = mongoose.Schema({
     },
     password:{
         type:String
-    }
+    },
+    challenges_participated : [{
+        type : Schema.Types.ObjectId,
+        ref : 'challenge'
+    }]
 })
 
 module.exports = mongoose.model("user", User)
