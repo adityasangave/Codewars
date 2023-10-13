@@ -40,6 +40,7 @@ router.get('/login', async (req, res)=>{
             res.json({"Error" : "Wrong Credentials"}).status(403)
 
         let userObj = {
+            _id : user._id,
             email : email,
             password : password
         }

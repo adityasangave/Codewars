@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-
+ 
 function generateCode(){
     const characters = '0123456789'; // Only numbers
     let result = '';
@@ -17,7 +17,6 @@ const Challenge = new mongoose.Schema({
     challenge_name : {
         type : String,
         maxLength : 30,
-        required : true
     },
     invite_code : {
         type: String,
@@ -41,4 +40,4 @@ const Challenge = new mongoose.Schema({
 }
 )
 
-module.export = mongoose.model('challenge', Challenge)
+module.exports = mongoose.model('challenge', Challenge)

@@ -13,7 +13,10 @@ function verify(req, res, next) {
         if(err)
             res.send({"Error" : "Unable to verify user"}).status(403);
 
-        else req.user = user;
+        else{
+            console.log(user._id)
+            req.user = user;
+        }
         next()
     })
 }
