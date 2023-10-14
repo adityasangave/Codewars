@@ -6,6 +6,7 @@ const server = require('../../index')
 const router = express.Router()
 
 // Endpoint to create challenge
+//this endpoint require trigerring joinRoom websocket and updating participants and redirect to choose problem statement page
 router.post('/create-challenge', verify, async (req, res) => {
   try {
     const challenge_name = req.body.challenge_name;
@@ -21,6 +22,23 @@ router.post('/create-challenge', verify, async (req, res) => {
   } catch (error) {
     console.log("Error creating challenge", error);
     res.status(500).json({ message: "Error creating challenge" });
+  }
+});
+
+//this endpoint require trigerring joinRoom websocket and updating participants and redirect to ps page
+router.post('/join-challenge', verify, async (req, res) => {
+  try {
+    const invite_code = req.body.invite_code;
+    let challenge = await Challenge.findOne({invite_code : invite_code})
+    if(!challenge)
+      res.status(403).json({Error : "Challange Does not found"});
+
+    if(challenge.participants.length === 2)
+      res.status(403).json({Error : "Challange is already ful"});
+
+    res.status(200).json({Success : challenge});
+  } catch (error) {
+    res.status(500).json({ message: "Error Joining Challenge" });
   }
 });
 

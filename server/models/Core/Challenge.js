@@ -33,7 +33,10 @@ const Challenge = new mongoose.Schema({
     participants : [{
         type : Schema.Types.ObjectId,
         ref : 'user'
-    }]
+    }],
+    participants_state : { // this field contains count of participants who are in ready state once count reaches 1 owner can start challenege
+        type : Number
+    }
 },
 {
     timestamps:true
