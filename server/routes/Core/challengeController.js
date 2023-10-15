@@ -10,7 +10,7 @@ const router = express.Router()
 router.post('/create-challenge', verify, async (req, res) => {
   try {
     const challenge_name = req.body.challenge_name;
-    console.log(req.user._id)
+
     const challenge = new Challenge({
       challenge_name: challenge_name,
       created_by: req.user._id

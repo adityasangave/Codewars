@@ -5,25 +5,33 @@ const ProblemStatement = new mongoose.Schema({
     name : {
         type : String,
         maxLength : 40,
-        required : true
     },
     difficulty : {
         type : String,
-        required : true
     },  
     time_to_solve : {     //Time given to candidates to solve challenge if chosen
         type : Number,
-        required:true
     },
     description : {
         type : String
     },
     example_input : {
         type : String,
-        required : true
     },
     example_output : {
         type : String,
-        required : true
+    },
+    testcases : [{
+        input : String,
+        Output : String
+    }],
+    required_testcase_input : { // Since every testcase ip/op is string this helps identify to which dtype testcase ip/op should be converted
+        type : String
+    },
+    required_testcase_output : {
+        type : String
     }
 })
+
+const Problem = new mongoose.model('ps', ProblemStatement)
+module.exports = Problem;

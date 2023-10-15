@@ -10,6 +10,7 @@ app.use(express.json())
 
 app.use('/auth', require('./routes/Auth/authController'))
 app.use('/api', require('./routes/Core/challengeController'))
+app.use('/api/problem', require('./routes/ProblemStatements/problemStatementController'))
 
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, {cors : {origin : '*'}});
