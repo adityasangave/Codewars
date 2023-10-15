@@ -6,7 +6,7 @@ const router = express.Router()
 
 //These endpoint requires user to be admin add functionality of admin user in authentication (non priority)
 
-router.post('/add-problem', verify,async (req, res) => {
+router.post('/add-problem', verify, async (req, res) => {
     try {
         const {
             name,
@@ -36,7 +36,7 @@ router.post('/add-problem', verify,async (req, res) => {
 });
 
 // get all problems
-router.get('/problems', verify,async (req, res) => {
+router.get('/problems', verify, async (req, res) => {
     try {
         const problems = await Problem.find({});
 
@@ -49,7 +49,7 @@ router.get('/problems', verify,async (req, res) => {
 
 
 //get single problem
-router.get('/problems/:id', verify,async (req, res) => {
+router.get('/problems/:id', verify, async (req, res) => {
     try {
         const problemId = req.params.id;
 
@@ -64,6 +64,52 @@ router.get('/problems/:id', verify,async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'An error occurred while fetching the problem' });
+    }
+});
+
+
+//Testcases
+router.post('/:id/add-testcase', async (req, res) => {
+    try {
+        const problemId = req.params.id;
+        const { input, output } = req.body;
+
+        const problem = await Problem.findById(problemId);
+
+        if (!problem) {
+            return res.status(404).json({ message: 'Problem not found' });
+        }
+        console.log(output)
+        problem.testcases.push({
+            input,
+            output
+        });
+
+        await problem.save();
+
+        res.status(201).json({ message: 'Test case added to the problem statement' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while adding the test case' });
+    }
+});
+
+router.get('/:id/testcases', async (req, res) => {
+    try {
+        const problemId = req.params.id;
+
+        const problem = await Problem.findById(problemId);
+
+        if (!problem) {
+            return res.status(404).json({ message: 'Problem not found' });
+        }
+
+        const testcases = problem.testcases;
+
+        res.status(200).json(testcases);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'An error occurred while fetching test cases' });
     }
 });
 

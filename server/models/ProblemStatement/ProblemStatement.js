@@ -29,7 +29,7 @@ const ProblemStatement = new mongoose.Schema({
     },
     testcases : [{
         input : String,
-        Output : String
+        output : String
     }]
 },
 {
