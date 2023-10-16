@@ -1,24 +1,24 @@
-const jwt = require('jsonwebtoken')
-const dotenv = require('dotenv').config()
+const jwt = require('jsonwebtoken');
 
 function verify(req, res, next) {
-    const authHeader = req.headers['authorization']
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    console.log(token);
 
-    console.log(authHeader)
-    const token = authHeader && authHeader.split(' ')[1]
+    if (!token) {
+        return res.status(403).json({"Error": "Token not found"});
+    }
 
-    if(!token) return res.json({"Error" : "Token not found"}).status(403);
-
-    jwt.verify(token, process.env.SECRET_TOKEN, (err, user)=>{
-        if(err)
-            res.send({"Error" : "Unable to verify user"}).status(403);
-
-        else{
-            console.log(user._id)
-            req.user = user;
+    jwt.verify(token, process.env.SECRET_TOKEN, (err, user) => {
+        if (err) {
+            return res.status(403).json({"Error": "Unable to verify user"});
         }
-        next()
-    })
+
+        // Store the user object in the request for later use
+        req.user = user;
+
+        next();
+    });
 }
 
-module.exports = verify
+module.exports = verify;

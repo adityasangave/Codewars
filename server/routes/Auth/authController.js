@@ -31,32 +31,33 @@ router.post('/register', async (req, res)=>{
 })
 
 //login endpoint
-router.get('/login', async (req, res)=>{
+router.get('/login', async (req, res) => {
     try {
-        const {email, password} = req.body;
-        let user = await User.findOne({email});
+        const { email, password } = req.body;
+        let user = await User.findOne({ email });
 
-        if(!user)
-            res.json({"Error" : "Wrong Credentials"}).status(403)
-
-        let userObj = {
-            _id : user._id,
-            email : email,
-            password : password
+        if (!user) {
+            return res.status(403).json({ "Error": "User not found" });
         }
-        
+
+        const userObj = {
+            _id: user._id,
+            email: email,
+            password: password
+        }
+
         const token = jwt.sign(userObj, process.env.SECRET_TOKEN);
 
-        await bcrypt.compare(user.password, password, function(err, result){
-            if(!err)
-                res.json({"Success" : user, "token" : token}).status(200) 
-            else
-                res.json({"Error" : "Wrong Credentials" + err + result}).status(403)
-        })
-    } 
-    catch (error) {
-        res.send("Something Went wrong" + error).status(403)
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (passwordMatch) {
+            return res.status(200).json({ "Success": user, "token": token });
+        } else {
+            return res.status(403).json({ "Error": "Wrong Credentials" });
+        }
+    } catch (error) {
+        return res.status(403).json({ "Error": "Something Went Wrong" });
     }
-})
+});
 
 module.exports = router

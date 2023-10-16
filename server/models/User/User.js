@@ -13,7 +13,7 @@ const User = mongoose.Schema({
     password:{
         type:String
     },
-    challenges_participated : [{
+    challenges_participated : [{ //Update this only if user successfuly completes the challenge not only if participates
         type : Schema.Types.ObjectId,
         ref : 'challenge'
     }]
