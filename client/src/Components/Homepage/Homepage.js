@@ -1,17 +1,26 @@
 import React from 'react';
-import './Homepage.css'; // Import the CSS file
+import { Link } from 'react-router-dom'; // Import Link from React Router
+import './Homepage.css';
 
 function Homepage() {
   return (
     <div className="homepage-container">
       <div className="auth-buttons">
-        <button className="auth-button">Sign Up</button>
-        <button className="auth-button">Sign In</button>
+        <Link to="/register">
+          <button className="auth-button">Sign Up</button>
+        </Link>
+        <Link to="/login">
+          <button className="auth-button">Sign In</button>
+        </Link>
       </div>
       <h1 className="codewars-heading">CodeWars</h1>
       <div className="button-container">
-        <button className="create-button">Create a Challenge</button>
-        <button className="join-button">Join a Challenge</button>
+        <Link to="/create-challenge">
+          <button className="create-button">Create a Challenge</button>
+        </Link>
+        <Link to="/join-challenge">
+          <button className="join-button">Join a Challenge</button>
+        </Link>
       </div>
     </div>
   );
