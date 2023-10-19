@@ -8,6 +8,10 @@ connect()
 app = express()
 app.use(express.json())
 
+app.get('/', (req, res)=>{
+    res.send("Done and dickli tick")
+})
+
 app.use('/auth', require('./routes/Auth/authController'))
 app.use('/api', require('./routes/Core/challengeController'))
 app.use('/api/problem', require('./routes/ProblemStatements/problemStatementController'))

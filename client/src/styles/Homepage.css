@@ -1,0 +1,35 @@
+.homepage-container {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    padding: 20px;
+}
+
+.codewars-heading {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.create-button,
+.join-button {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 0 10px;
+    background-color: #007BFF;
+    /* You can use your desired button colors */
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.create-button:hover,
+.join-button:hover {
+    background-color: #0056b3;
+    /* Change the color on hover */
+}

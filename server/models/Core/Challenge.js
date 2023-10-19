@@ -15,7 +15,7 @@ function generateCode(){
 
 const Challenge = new mongoose.Schema({
     challenge_name : {
-        type : String,
+        type : String, 
         maxLength : 30,
     },
     invite_code : {
@@ -35,7 +35,7 @@ const Challenge = new mongoose.Schema({
         ref : 'user'
     }],
     participants_state : { // this field contains count of participants who are in ready state once count reaches 1 owner can start challenege
-        type : Number
+        type : Number,
     }
 },
 {
