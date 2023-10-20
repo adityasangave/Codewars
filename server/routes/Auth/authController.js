@@ -31,7 +31,7 @@ router.post('/register', async (req, res)=>{
 })
 
 //login endpoint
-router.get('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
         let user = await User.findOne({ email });
@@ -51,12 +51,12 @@ router.get('/login', async (req, res) => {
         const passwordMatch = await bcrypt.compare(password, user.password);
 
         if (passwordMatch) {
-            return res.status(200).json({ "Success": user, "token": token });
+            return res.status(200).json({ "user": user, "token": token });
         } else {
             return res.status(403).json({ "Error": "Wrong Credentials" });
         }
     } catch (error) {
-        return res.status(403).json({ "Error": "Something Went Wrong" });
+        return res.status(403).json({ "Error": error });
     }
 });
 

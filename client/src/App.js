@@ -3,26 +3,28 @@ import Homepage from './Components/Homepage/Homepage';
 import CreateChallenge from './Components/Challenge/CreateChallenge';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Register from './Components/Auth/Register';
+import Login from './Components/Auth/Login';
+import { AuthProvider } from './Context/AuthContext';
 
 function App() {
   return (
-    <div className="App">
-      <h1><BrowserRouter>
-        <Routes>
-          <Route exact path='/' Component={Homepage} />
+    <AuthProvider>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Homepage />} />
 
-          {/* //Auth Routes */}
-          <Route exact path='/register' Component={Register} />
-          <Route exact path='/create-challenge' Component={CreateChallenge} />
+            {/* Auth Routes */}
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
 
-          {/* Challenge Routes */}
-          <Route exact path='/create-challenge' Component={CreateChallenge} />
-          <Route exact path='/join-challenge' Component={Homepage} />
-          
-        </Routes>
-      </BrowserRouter>
-      </h1>
-    </div>
+            {/* Challenge Routes */}
+            <Route path="/create-challenge" element={<CreateChallenge />} />
+            <Route path="/join-challenge" element={<Homepage />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </AuthProvider>
   );
 }
 

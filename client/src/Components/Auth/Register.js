@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Register.css'
+import { useNavigate } from 'react-router-dom';
 
 function Register() {
+    const history = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -20,10 +22,11 @@ function Register() {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:8000/auth/register', formData);
+            const response = await axios.post('/auth/register', formData);
 
             // Handle success, e.g., show a success message or redirect to another page
             console.log('Registration successful:', response.data);
+            history.push('/login')
         } catch (error) {
             // Handle errors, e.g., display an error message
             console.error('Registration failed:', error);
