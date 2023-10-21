@@ -7,23 +7,23 @@ const jwt = require('jsonwebtoken')
 const router = express.Router()
 
 //Sign up Endpoint
-router.post('/register', async (req, res)=>{
+router.post('/register', async (req, res) => {
     try {
-        const {name, email, password} = req.body;
-        let user = await User.findOne({email});
+        const { name, email, password } = req.body;
+        let user = await User.findOne({ email });
 
-        if(user)
-            res.json({"Error" : "User with email already exists"}).status(203);
+        if (user)
+            res.json({ "Error": "User with email already exists" }).status(203);
 
         let hashedPassword = await bcrypt.hash(password, 10);
 
         await User.create({
-            name : name,
-            email : email,
-            password : hashedPassword
-        })  
-        
-        res.json({"Success" : "User Created Successfully"}).json(200);
+            name: name,
+            email: email,
+            password: hashedPassword
+        })
+
+        res.json({ "Success": "User Created Successfully" }).json(200);
 
     } catch (error) {
         console.log("Error creating user" + error);
@@ -60,4 +60,12 @@ router.post('/login', async (req, res) => {
     }
 });
 
-module.exports = router
+router.get('/logout', (req, res) => {
+    try {
+        return res.status(200).send({"Success" : "Logout Successfull"})
+    } catch (error) {
+        return res.status(403).json({ "Error": error });
+    }
+})
+
+module.exports = router;

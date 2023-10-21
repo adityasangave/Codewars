@@ -24,11 +24,9 @@ function Register() {
         try {
             const response = await axios.post('/auth/register', formData);
 
-            // Handle success, e.g., show a success message or redirect to another page
             console.log('Registration successful:', response.data);
             history.push('/login')
         } catch (error) {
-            // Handle errors, e.g., display an error message
             console.error('Registration failed:', error);
         }
     };
