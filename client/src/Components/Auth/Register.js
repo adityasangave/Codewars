@@ -23,9 +23,13 @@ function Register() {
 
         try {
             const response = await axios.post('/auth/register', formData);
-
-            console.log('Registration successful:', response.data);
-            history.push('/login')
+            if(response.status === 200){
+                console.log('Registration successful:', response.data);
+                history('/login')
+            }
+            else if(response.status === 203)
+                alert('User with email already exists')
+        
         } catch (error) {
             console.error('Registration failed:', error);
         }
