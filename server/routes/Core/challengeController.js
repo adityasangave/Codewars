@@ -19,7 +19,7 @@ router.post('/create-challenge', verify, async (req, res) => {
 
     await challenge.save();
 
-    res.status(200).json({ message: "Challenge Joining Code" + challenge.invite_code });
+    res.status(200).json({ message: "Challenge Joining Code", "invite_code" : challenge.invite_code });
   } catch (error) {
     console.log("Error creating challenge", error);
     res.status(500).json({ message: "Error creating challenge" });
