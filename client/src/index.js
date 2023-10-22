@@ -10,7 +10,6 @@ console.log(process.env.REACT_APP_API_URI)
 axios.defaults.baseURL = "http://127.0.0.1:8000";
 if(localStorage.getItem('token'))
   axios.defaults.headers.common['Authorization'] = `Bearer + ${localStorage.getItem('token')}`
-
 root.render(
   <React.StrictMode>
     <App />
