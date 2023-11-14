@@ -26,6 +26,14 @@ input {
     border-radius: 5px;
 }
 
+.invite_code{
+    margin: 20px 0px;
+}
+
+.go-to-room{
+    background-color: #96B6C5;
+}
+
 .create-button {
     font-family: 'Poppins', sans-serif;
     font-size: 18px;

@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 function CreateChallenge() {
   const navigate = useNavigate();
-  const [challengeName, setChallengeName] = useState('');
+  const [challenge_name, setChallengeName] = useState('');
   const [inviteCode, setInviteCode] = useState('');
   const [inviteCodeVisible, setInviteCodeVisible] = useState(false);
 
@@ -16,10 +16,20 @@ function CreateChallenge() {
 
   const handleCreateChallenge = async (e) => {
     e.preventDefault();
-
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = user.token;
+    console.log(user + token)
     try {
-      const response = await axios.post('/api/create-challenge', { challengeName });
-
+      const response = await axios.post(
+        "http://localhost:8000/api/create-challenge",
+        { challenge_name },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log(response.status);
       if (response.status === 200) {
         const newInviteCode = response.data.invite_code;
         setInviteCode(newInviteCode);
@@ -31,9 +41,11 @@ function CreateChallenge() {
         setChallengeName('');
       }
     } catch (error) {
+      console.log(error);
       console.error('Error creating a challenge:', error);
     }
   };
+
 
   return (
     <div className="create-challenge-container">
@@ -43,15 +55,21 @@ function CreateChallenge() {
         <input
           type="text"
           placeholder="Challenge Name"
-          value={challengeName}
+          value={challenge_name}
           onChange={handleChallengeNameChange}
         />
         {inviteCodeVisible && (
-          <div className="invite_code">{inviteCode}</div>
+          <div className="invite_code">Invite Code: {inviteCode}</div>
         )}
-        <button className="create-button" onClick={handleCreateChallenge}>
-          Create
-        </button>
+        {inviteCodeVisible ? (
+          <button className="go-to-room" onClick={() => navigate('/room')}>
+            Go to Room
+          </button>
+        ) : (
+          <button className="create-button" onClick={handleCreateChallenge}>
+            Create
+          </button>
+        )}
       </div>
     </div>
   );

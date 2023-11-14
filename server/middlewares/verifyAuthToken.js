@@ -1,11 +1,14 @@
 const jwt = require('jsonwebtoken');
 
 function verify(req, res, next) {
-    const authHeader = req.headers['authorization'];
+    console.log("Middleware triggered")
+    const authHeader = req.headers["authorization"];
+    console.log(authHeader)
     const token = authHeader && authHeader.split(' ')[1];
     console.log(token);
-
+    
     if (!token) {
+        console.log("true no token");
         return res.status(403).json({"Error": "Token not found"});
     }
 
@@ -14,9 +17,7 @@ function verify(req, res, next) {
             return res.status(403).json({"Error": "Unable to verify user"});
         }
 
-        // Store the user object in the request for later use
         req.user = user;
-
         next();
     });
 }

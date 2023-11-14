@@ -8,23 +8,25 @@ const router = express.Router()
 // Endpoint to create challenge
 //this endpoint require trigerring joinRoom websocket and updating participants and redirect to choose problem statement page
 router.post('/create-challenge', verify, async (req, res) => {
+  console.log("Triggered");
   try {
     const challenge_name = req.body.challenge_name;
 
     const challenge = new Challenge({
       challenge_name: challenge_name,
       created_by: req.user._id,
-      participants : [req.user._id]
+      participants: [req.user._id]
     });
 
     await challenge.save();
 
-    res.status(200).json({ message: "Challenge Joining Code", "invite_code" : challenge.invite_code });
+    res.status(200).json({ message: "Challenge Joining Code", invite_code: challenge.invite_code });
   } catch (error) {
     console.log("Error creating challenge", error);
     res.status(500).json({ message: "Error creating challenge" });
   }
 });
+
 
 //this endpoint require trigerring joinRoom websocket and updating participants and redirect to ps page
 router.post('/join-challenge', verify, async (req, res) => {
