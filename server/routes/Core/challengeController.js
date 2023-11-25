@@ -39,6 +39,9 @@ router.post('/join-challenge', verify, async (req, res) => {
     if (challenge.participants.length === 2)
       res.status(403).json({ Error: "Challange is already full" });
 
+    if(challenge.created_by === req.user._id)
+      res.status(403).json({Error : "Creator and joinee can't be same"})
+      
     await challenge.participants.push(req.user._id);
     await challenge.save();
 

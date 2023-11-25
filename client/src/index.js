@@ -6,10 +6,14 @@ import axios from 'axios';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-console.log(process.env.REACT_APP_API_URI)
-axios.defaults.baseURL = "http://127.0.0.1:8000";
-if(localStorage.getItem('token'))
-  axios.defaults.headers.common['Authorization'] = `Bearer + ${localStorage.getItem('token')}`
+axios.defaults.baseURL = process.env.REACT_APP_API_URI;
+if (JSON.parse(localStorage.getItem('user'))) {
+  let user = JSON.parse(localStorage.getItem('user'))
+  let token = user.token
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+}
+
+
 root.render(
   <React.StrictMode>
     <App />
