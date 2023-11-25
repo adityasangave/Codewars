@@ -1,6 +1,7 @@
 import './App.css';
 import Homepage from './Components/Homepage/Homepage';
 import CreateChallenge from './Components/Challenge/CreateChallenge';
+import JoinChallenge from './Components/Challenge/JoinChallenge';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Register from './Components/Auth/Register';
 import Login from './Components/Auth/Login';
@@ -32,7 +33,7 @@ function App() {
             } />
             <Route path="/join-challenge" element={
               <RequireAuth>
-                <Homepage />
+                <JoinChallenge/>
               </RequireAuth>} />
           </Routes>
         </BrowserRouter>
