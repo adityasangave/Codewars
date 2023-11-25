@@ -1,18 +1,19 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../Context/AuthContext';
 import axios from 'axios';
 
+
 function Profile() {
     const isAuthenticated = useAuth();
-
+    const navigate = useNavigate();
     const handleLogout = async (e) => {
         e.preventDefault();
         try {
             let response = await axios.get('http://localhost:8000/auth/logout');
             localStorage.removeItem('user')
             console.log('Logout Successfull', response);
-            window.location.reload();
+            navigate('/login')
         }
         catch {
             console.log("Something went wrong");
