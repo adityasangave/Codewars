@@ -26,10 +26,11 @@ function Login() {
 
       // Handle success: Save the JWT token in local storage
       const token = response.data.token;
-      const id = response.data.user.id;
+      const id = response.data.user._id;
       const name = response.data.user.name;
       const email = response.data.user.email;
-
+      console.log("user in login.js")
+      console.log(id)
       login({ 'id': id, 'name': name, 'email': email, 'token': token })
 
       console.log('Login successful:', response.data);

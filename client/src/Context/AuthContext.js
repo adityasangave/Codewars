@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true); // Added loading state
 
   const login = (userData) => {
+    console.log(userData)
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
   };
