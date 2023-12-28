@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Profile from '../Auth/Profile';
@@ -6,6 +6,7 @@ import Profile from '../Auth/Profile';
 function JoinChallenge() {
     const navigate = useNavigate();
     const [inviteCode, setInviteCode] = useState('');
+    const [room, setRoom] = useState();
 
     const handleInviteCodeChange = (e) => {
         setInviteCode(e.target.value);
@@ -19,27 +20,35 @@ function JoinChallenge() {
         try {
             const response = await axios.post(
                 'http://localhost:8000/api/join-challenge',
-                { invite_code: inviteCode }
-                // {
-                //     headers: {
-                //         Authorization: `Bearer ${token}`,
-                //     },
-                // }
-            );
-
-            if (response.status === 200) {
-                // Successful join, navigate to the room page
-                // navigate('/room');
-                console.log("Joined successfully")
-            } else {
-                // Handle other responses or display an error message
-                console.error('Failed to join challenge:', response.data.message);
-            }
+                { invite_code: inviteCode },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            ).then((response) => {
+                if (response.status === 200) {
+                    setRoom(response.data.challenge);
+                    localStorage.setItem('room', JSON.stringify(response.data.challenge));
+                    // navigate(`/room/:${room._id}`)
+                } else {
+                    console.error('Failed to create challenge:', response.data.message);
+                }
+            }).catch((error) => {
+                console.error('Failed to join challenge:', error);
+            });
         } catch (error) {
             console.log(error);
             console.error('Error joining challenge:', error);
         }
     };
+
+    useEffect(() => {
+        // Navigate to the room page once the room state is updated
+        if (room) {
+            navigate(`/room/${room._id}`, {state : {room}});
+        }
+    }, [room, navigate]);
 
     return (
         <div className="join-challenge-container">

@@ -7,6 +7,7 @@ import Register from './Components/Auth/Register';
 import Login from './Components/Auth/Login';
 import { AuthProvider } from './Context/AuthContext';
 import { useAuth } from './Context/AuthContext';
+import Lobby from './Components/Room/Lobby';
 
 function App() {
   function RequireAuth({ children }) {
@@ -34,6 +35,12 @@ function App() {
             <Route path="/join-challenge" element={
               <RequireAuth>
                 <JoinChallenge/>
+              </RequireAuth>} />
+
+            
+            <Route path="/room/:room_id" element={
+              <RequireAuth>
+                <Lobby/>
               </RequireAuth>} />
           </Routes>
         </BrowserRouter>

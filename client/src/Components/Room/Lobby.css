@@ -1,0 +1,38 @@
+.heading{
+    display: flex;
+    font-size: 60px;
+    justify-content: center;
+}
+.sub-heading{
+    margin: 20px 0px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.problem-section{
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.problem{
+    display: flex;
+    justify-content: left;
+}
+
+.problem-info{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin: 20px 0px;
+}
+
+.problem-name{
+    font-size: 27px;
+    margin-bottom: 7px;
+}
+.problem-description{
+    font-size: 15px;
+}

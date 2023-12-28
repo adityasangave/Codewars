@@ -20,7 +20,8 @@ router.post('/create-challenge', verify, async (req, res) => {
 
     await challenge.save();
 
-    res.status(200).json({ message: "Challenge Joining Code", invite_code: challenge.invite_code });
+    // res.status(200).json({ message: "Challenge Joining Code", invite_code: challenge.invite_code });
+    res.status(200).json({ challenge });
   } catch (error) {
     console.log("Error creating challenge", error);
     res.status(500).json({ message: "Error creating challenge" });
@@ -45,7 +46,7 @@ router.post('/join-challenge', verify, async (req, res) => {
     await challenge.participants.push(req.user._id);
     await challenge.save();
 
-    res.status(200).json({ Success: "New User Joined the challenge" + req.user._id});
+    res.status(200).json({ challenge });
   } catch (error) {
     res.status(500).json({ message: "Error Joining Challenge" });
   }

@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import './CreateChallenge.css';
 import Profile from '../Auth/Profile';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function CreateChallenge() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [room, setRoom] = useState();
   const [challenge_name, setChallengeName] = useState('');
   const [inviteCode, setInviteCode] = useState('');
   const [inviteCodeVisible, setInviteCodeVisible] = useState(false);
@@ -17,26 +19,27 @@ function CreateChallenge() {
     e.preventDefault();
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user.token;
-    console.log(user + token)
     try {
       const response = await axios.post(
         "http://localhost:8000/api/create-challenge",
-        { challenge_name }
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //   },
-        // }
+        { challenge_name },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      console.log(response.status);
       if (response.status === 200) {
-        const newInviteCode = response.data.invite_code;
+        console.log(response.data.challenge)
+        
+        const newInviteCode = response.data.challenge.invite_code;
         setInviteCode(newInviteCode);
         setInviteCodeVisible(true);
-        // navigate() navigate to room page
+        
+        setRoom(response.data.challenge)
+        localStorage.setItem('room', JSON.stringify(response.data.challenge)) // Save room to localstorage for recovery purposes
       } else {
         alert(response.data.message);
-        // Clear the challenge name input
         setChallengeName('');
       }
     } catch (error) {
@@ -62,7 +65,7 @@ function CreateChallenge() {
           <div className="invite_code">Invite Code: {inviteCode}</div>
         )}
         {inviteCodeVisible ? (
-          <button className="go-to-room" /*onClick={() => navigate('/room')}*/>
+          <button className="go-to-room" onClick={() => navigate(`/room/${room._id}`, {state : {room}})}>
             Go to Room
           </button>
         ) : (
