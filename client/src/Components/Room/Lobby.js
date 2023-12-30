@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useLocation } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
+
 
 import './Lobby.css'
+import { useAuth } from '../../Context/AuthContext';
 
 function Lobby() {
     const [problems, setProblems] = useState([]);
-    const [user, setUser] = useState({});
+    const user = useAuth();
     const { state } = useLocation();
     const [room, setRoom] = useState(state.room);
 
@@ -17,7 +21,11 @@ function Lobby() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('api/problem/problems');
+                const response = await axios.get('api/problem/problems', {
+                    headers: {
+                        Authorization: `Bearer ${user.user.token}`,
+                    },
+                });
                 if (response.status === 200) {
                     setProblems(response.data);
                 }
@@ -26,12 +34,12 @@ function Lobby() {
             }
         };
 
-        const updateRoomAndUser = () => {
-            setUser(JSON.parse(localStorage.getItem('user')) || {});
-        };
-        
+        // const updateRoomAndUser = () => {
+        //     setUser(JSON.parse(localStorage.getItem('user')) || {});
+        // };
+
         fetchData();
-        updateRoomAndUser();
+        // updateRoomAndUser();
     }, []);
 
     return (
@@ -43,10 +51,17 @@ function Lobby() {
 
                 <div className="room-info">
                     <div className="state-button">
-                        <button>{room.challenge_name}</button>
+                        <h2>{room.challenge_name}</h2>
                     </div>
                     <div className="players">
-
+                        <div className='player'>
+                            <FontAwesomeIcon icon={faUser} className='icon'/>
+                            <h4 className="name">{user.user.name}</h4>
+                        </div>
+                        <div className='player'>
+                            <FontAwesomeIcon icon={faUser} className='icon'/>
+                            <h4 className="name">{user.user.name}</h4>
+                        </div>
                     </div>
                 </div>
 

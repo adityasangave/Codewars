@@ -2,11 +2,6 @@ const mongoose = require('mongoose')
 const env = require("dotenv")
 env.config()
 
-const options = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-};
-
 const connectDB = () => {
     mongoose.connect(process.env.DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
         .then((result) => {
