@@ -74,3 +74,28 @@
 .problem-description{
     font-size: 15px;
 }
+
+.selected {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background-color: #fff; /* Set background color as needed */
+    padding: 10px; /* Add padding as needed */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid black;
+    margin: 5px;
+    margin-right: 10px;
+}
+
+.selected button {
+    margin-right: 50px; /* Remove default margin for h3 */
+}
+
+.selected-content{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
