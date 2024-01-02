@@ -8,6 +8,7 @@ import Login from './Components/Auth/Login';
 import { AuthProvider } from './Context/AuthContext';
 import { useAuth } from './Context/AuthContext';
 import Lobby from './Components/Room/Lobby';
+import Details from './Components/Room/Details';
 
 function App() {
   function RequireAuth({ children }) {
@@ -41,6 +42,11 @@ function App() {
             <Route path="/room/:room_id" element={
               <RequireAuth>
                 <Lobby/>
+              </RequireAuth>} />
+
+              <Route path="/details/:problem_id" element={
+              <RequireAuth>
+                <Details/>
               </RequireAuth>} />
           </Routes>
         </BrowserRouter>
