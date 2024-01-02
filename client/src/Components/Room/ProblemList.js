@@ -5,7 +5,7 @@ const ProblemList = ({ user, room, problems, handleProblemClicked, handleProblem
         <div className="problem-section">
             {problems.map((problem) => (
                 <div key={problem._id} className="problem"
-                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor:'pointer' }}>
                     <div className="problem-info" onClick={() => handleProblemClicked(problem._id)}>
                         <div className='problem-name'>{problem.name}</div>
                         <div className='problem-description'>{problem.description}</div>
