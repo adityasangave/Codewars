@@ -78,7 +78,7 @@ function Lobby() {
                         </div>
                         <div>
                             {room.created_by === user.user.id ?
-                                <button className="state">Start</button> :
+                                <button className="state" onClick={()=>{ navigate('/playground', { state: { selectedProblem } }) }}>Start</button> :
                                 <button className='state'>Ready</button>
                             }
                         </div>
