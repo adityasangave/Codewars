@@ -16,11 +16,11 @@ function Playground() {
 
     return (
         <div style={{ display: 'flex', height: '100vh' }}>
-            <div style={{ width: '50%', height: '100%', overflow: 'auto' }}>
+            <div style={{ width: '35%', height: '100%', overflow: 'auto' }}>
                 <ProblemDescription problem={problem} />
             </div>
-            <div style={{ width: '50%', height: '100%' }}>
-                <CodeEditor value={code} handleOnChange={handleCodeChange} />
+            <div style={{ width: '65%', height: '100%' }}>
+                <CodeEditor value={code} handleOnChange={handleCodeChange} testcases={problem.testcases}/>
             </div>
         </div>
     );
