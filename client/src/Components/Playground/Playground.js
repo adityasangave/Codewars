@@ -3,16 +3,80 @@ import CodeEditor from './CodeEditor'
 import { useLocation } from 'react-router-dom';
 import ProblemDescription from './ProblemDescription';
 import './Style.css'
+import axios from 'axios'
 
 function Playground() {
     const [code, setCode] = useState();
     const { state } = useLocation()
     const problem = state.selectedProblem;
+    let token = ''
+
+    const options = {
+        url: 'https://judge0-ce.p.rapidapi.com',
+        headers: {
+            'content-type': 'application/json',
+            'Content-Type': 'application/json',
+            'X-RapidAPI-Key': '75f48a60ebmsh8400fc7d428e7a0p148edcjsn140669f418db',
+            'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
+        }
+    };
+
+    const reqBody = {
+        "source_code": "print(\"hell0\")",
+        "language_id": "71",
+        "number_of_runs": null,
+        "stdin": "Judge0",
+        "expected_output": null,
+        "cpu_time_limit": null,
+        "cpu_extra_time": null,
+        "wall_time_limit": null,
+        "memory_limit": null,
+        "stack_limit": null,
+        "max_processes_and_or_threads": null,
+        "enable_per_process_and_thread_time_limit": null,
+        "enable_per_process_and_thread_memory_limit": null,
+        "max_file_size": null,
+        "enable_network": null
+    }
 
     const handleCodeChange = (newCode) => {
         console.log(newCode)
         setCode(newCode);
     };
+
+    function waitFor5Seconds(callbackFunc) {
+        setTimeout(() => {
+            console.log('wait 5 seconds');
+            callbackFunc(); // Invoke the callback function here.
+        }, 5000);
+    }
+
+    const handleCodeRun = () => {
+        console.log("Code Run")
+        axios(`${options.url}/submissions`, {
+            method: 'POST',
+            headers: options.headers,
+            data: reqBody
+        }).then(response => {
+            console.log(response.data);
+            token = response.data.token
+        }).catch(error => {
+            console.error('Error:', error.response ? error.response.data : error.message);
+        });
+
+        waitFor5Seconds(function () {
+            axios(`${options.url}/submissions/${token}`, {
+                method: "GET",
+                headers : options.headers,
+            })
+                .then((response) => {
+                    console.log(response)
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        });
+    }
 
     return (
         <div style={{ display: 'flex', height: '100vh' }}>
@@ -20,7 +84,7 @@ function Playground() {
                 <ProblemDescription problem={problem} />
             </div>
             <div style={{ width: '65%', height: '100%' }}>
-                <CodeEditor value={code} handleOnChange={handleCodeChange} testcases={problem.testcases}/>
+                <CodeEditor value={code} handleOnChange={handleCodeChange} testcases={problem.testcases} handleCodeRun={handleCodeRun} />
             </div>
         </div>
     );

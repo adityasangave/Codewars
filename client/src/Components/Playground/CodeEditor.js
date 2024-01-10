@@ -1,7 +1,7 @@
 import React from 'react'
 import Editor from '@monaco-editor/react';
 
-function CodeEditor({ value, handleOnChange, testcases }) {
+function CodeEditor({ value, handleOnChange, testcases, handleCodeRun }) {
     return (
         <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <div style={{ flex: '80%', overflow: 'auto' }}>
@@ -20,7 +20,7 @@ function CodeEditor({ value, handleOnChange, testcases }) {
             <div style={{ display: 'flex', justifyContent:'space-between', padding:'5px 20px' }}>
                 <h3>Testcases</h3>
                 <div>
-                    <button className="run" style={{ margin : '0px 5px'}}>Run</button>
+                    <button className="run" style={{ margin : '0px 5px'}} onClick={handleCodeRun}>Run</button>
                     <button className="submit" style={{ margin : '0px 5px'}}>Submit</button>
                 </div>
             </div>
