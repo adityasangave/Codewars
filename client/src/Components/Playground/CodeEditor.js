@@ -17,24 +17,6 @@ function CodeEditor({ value, handleOnChange, testcases, handleCodeRun }) {
                     }}
                 />
             </div>
-            <div style={{ display: 'flex', justifyContent:'space-between', padding:'5px 20px' }}>
-                <h3>Testcases</h3>
-                <div>
-                    <button className="run" style={{ margin : '0px 5px'}} onClick={handleCodeRun}>Run</button>
-                    <button className="submit" style={{ margin : '0px 5px'}}>Submit</button>
-                </div>
-            </div>
-            <div style={{ flex: '20%', overflow: 'auto' }}>
-                <ul>
-                    {testcases.slice(0, 2).map((testcase, index) => (
-                        <li key={index}>
-                            <strong>Testcase {index + 1}</strong>
-                            <p><strong>Input:</strong> {testcase.input}</p>
-                            <p><strong>Output:</strong> {testcase.output}</p>
-                        </li>
-                    ))}
-                </ul>
-            </div>
         </div>
     )
 }
