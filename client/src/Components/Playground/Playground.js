@@ -13,10 +13,12 @@ function Playground() {
     const problem = state.selectedProblem;
     let token = ''
 
+    const [activeTab, setActiveTab] = useState('input');
+
     const languageIds = {
-        'python' : "71",
-        'c++' : "53",
-        'java' : "91"
+        'python': "71",
+        'c++': "53",
+        'java': "91"
     }
 
     const options = {
@@ -32,24 +34,16 @@ function Playground() {
     const reqBody = {
         "source_code": `${code}`,
         "language_id": "71",
-        "number_of_runs": null,
         "stdin": "Judge0",
-        "expected_output": null,
-        "cpu_time_limit": null,
-        "cpu_extra_time": null,
-        "wall_time_limit": null,
-        "memory_limit": null,
-        "stack_limit": null,
-        "max_processes_and_or_threads": null,
-        "enable_per_process_and_thread_time_limit": null,
-        "enable_per_process_and_thread_memory_limit": null,
-        "max_file_size": null,
-        "enable_network": null
     }
+
+    const handleTabClick = (tab) => {
+        setActiveTab(tab);
+    };
 
     const handleSelectChange = (event) => {
         const lang = event.target.value;;
-        setSelectedLanguage({'lang' : lang, 'id' : languageIds[lang]});
+        setSelectedLanguage({ 'lang': lang, 'id': languageIds[lang] });
     };
 
     const handleCodeChange = (newCode) => {
@@ -96,19 +90,52 @@ function Playground() {
             <div style={{ width: '35%', height: '100%', overflow: 'auto' }}>
                 <ProblemDescription problem={problem} />
             </div>
-            <div style={{ width: '65%', height: '100%' }}>
+            <div style={{ width: '65%', height: '100%', display: 'flex', flexDirection: 'column' }}>
                 <div>
-                    <select id="languages" value={selectedLanguage} onChange={handleSelectChange} style={{ border:'none' ,borderRadius: '7px', fontFamily: 'Poppins', padding: '5px', margin:'3px' }}>
+                    <select id="languages" value={selectedLanguage['lang']} onChange={handleSelectChange} style={{ border: 'none', borderRadius: '7px', fontFamily: 'Poppins', padding: '5px', margin: '3px' }}>
                         <option value="c++">C++</option>
                         <option value="java">Java</option>
                         <option value="python">Python</option>
                     </select>
+                </div>
+                <div style={{ flex: '70%', overflow: 'auto' }}>
+                    <CodeEditor value={code} handleOnChange={handleCodeChange} testcases={problem.testcases} handleCodeRun={handleCodeRun} />
+                </div>
 
-                    {selectedLanguage['lang'] && (
-                        <p>You selected: {selectedLanguage['lang']}</p>
+                <div style={{ flex: '30%' }}>
+                    <div className="select-console" style={{ display: 'flex' }}>
+                        <div
+                            className={`c-input ${activeTab === 'input' ? 'active' : ''}`}
+                            onClick={() => handleTabClick('input')}
+                        >
+                            Input
+                        </div>
+                        <div
+                            className={`c-output ${activeTab === 'output' ? 'active' : ''}`}
+                            onClick={() => handleTabClick('output')}
+                        >
+                            Output
+                        </div>
+                    </div>
+                    {activeTab === 'input' && (
+                        <div className="input" style={{ overflow: 'auto' }}>
+                            <textarea name="input" rows="13" placeholder="Enter input" style={{ width: '100%', boxSizing: 'border-box', margin: 0, padding: 0 }}></textarea>
+                        </div>
+                    )}
+                    {activeTab === 'output' && (
+                        <div className="output" style={{ overflow: 'auto' }}>
+                            {/* Render your output content here */}
+                        </div>
                     )}
                 </div>
-                <CodeEditor value={code} handleOnChange={handleCodeChange} testcases={problem.testcases} handleCodeRun={handleCodeRun} />
+
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 20px' }}>
+                    <div>
+                        <button className="run" style={{ margin: '0px 5px' }} onClick={handleCodeRun}>Run</button>
+                        <button className="submit" style={{ margin: '0px 5px' }}>Submit</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     );
