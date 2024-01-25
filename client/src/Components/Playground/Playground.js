@@ -9,6 +9,8 @@ function Playground() {
     const [selectedLanguage, setSelectedLanguage] = useState({});
 
     const [code, setCode] = useState();
+    const [output, setOutput] = useState('');
+
     const { state } = useLocation()
     const problem = state.selectedProblem;
     let token = ''
@@ -60,10 +62,16 @@ function Playground() {
 
     const handleCodeRun = () => {
         console.log("Code Run")
+
+        const updatedReqBody = {
+            "source_code": code,
+            "language_id": selectedLanguage.id, // Use the language ID from selectedLanguage
+        };
+
         axios(`${options.url}/submissions`, {
             method: 'POST',
             headers: options.headers,
-            data: reqBody
+            data: updatedReqBody
         }).then(response => {
             console.log(response.data);
             token = response.data.token
@@ -78,6 +86,7 @@ function Playground() {
             })
                 .then((response) => {
                     console.log(response)
+                    setOutput(response.data.stdout || 'No output available');
                 })
                 .catch(error => {
                     console.log(error)
@@ -108,16 +117,16 @@ function Playground() {
                             <div style={{ margin: '3px' }}>
                                 Input
                             </div>
-                            <div className="input">
-                                <textarea name="input" rows="10" placeholder="Enter input" style={{ width: '100%', boxSizing: 'border-box', margin: 0, padding: '5px', border: '2px solid black', resize: 'none' }}></textarea>
+                            <div>
+                                <textarea className="input" name="input" rows="10" placeholder="Enter input" style={{ width: '100%', boxSizing: 'border-box', margin: 0, padding: '5px', border: '2px solid black', resize: 'none' }}></textarea>
                             </div>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', flex: '1', margin: '0px 5px' }}>
                             <div style={{ margin: '3px' }}>
                                 Output
                             </div>
-                            <div className="input">
-                                <textarea name="input" rows="10" placeholder="Output" style={{ width: '100%', boxSizing: 'border-box', margin: 0, padding: '5px', border: '2px solid black', resize: 'none' }}></textarea>
+                            <div>
+                                <textarea value={output} className="output" name="output" rows="10" placeholder="Output" style={{ width: '100%', boxSizing: 'border-box', margin: 0, padding: '5px', border: '2px solid black', resize: 'none' }}></textarea>
                             </div>
                         </div>
                     </div>
