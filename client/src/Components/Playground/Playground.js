@@ -103,33 +103,27 @@ function Playground() {
                 </div>
 
                 <div style={{ flex: '30%' }}>
-                    <div className="select-console" style={{ display: 'flex' }}>
-                        <div
-                            className={`c-input ${activeTab === 'input' ? 'active' : ''}`}
-                            onClick={() => handleTabClick('input')}
-                        >
-                            Input
+                    <div className="select-console" style={{ display: 'flex', width: '100%' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', flex: '1', margin: '0px 5px' }}>
+                            <div style={{ margin: '3px' }}>
+                                Input
+                            </div>
+                            <div className="input">
+                                <textarea name="input" rows="10" placeholder="Enter input" style={{ width: '100%', boxSizing: 'border-box', margin: 0, padding: '5px', border: '2px solid black', resize: 'none' }}></textarea>
+                            </div>
                         </div>
-                        <div
-                            className={`c-output ${activeTab === 'output' ? 'active' : ''}`}
-                            onClick={() => handleTabClick('output')}
-                        >
-                            Output
+                        <div style={{ display: 'flex', flexDirection: 'column', flex: '1', margin: '0px 5px' }}>
+                            <div style={{ margin: '3px' }}>
+                                Output
+                            </div>
+                            <div className="input">
+                                <textarea name="input" rows="10" placeholder="Output" style={{ width: '100%', boxSizing: 'border-box', margin: 0, padding: '5px', border: '2px solid black', resize: 'none' }}></textarea>
+                            </div>
                         </div>
                     </div>
-                    {activeTab === 'input' && (
-                        <div className="input" style={{ overflow: 'auto' }}>
-                            <textarea name="input" rows="13" placeholder="Enter input" style={{ width: '100%', boxSizing: 'border-box', margin: 0, padding: 0 }}></textarea>
-                        </div>
-                    )}
-                    {activeTab === 'output' && (
-                        <div className="output" style={{ overflow: 'auto' }}>
-                            {/* Render your output content here */}
-                        </div>
-                    )}
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0px' }}>
                     <div>
                         <button className="run" style={{ margin: '0px 5px' }} onClick={handleCodeRun}>Run</button>
                         <button className="submit" style={{ margin: '0px 5px' }}>Submit</button>
