@@ -5,7 +5,7 @@ module.exports = function initializeSocketEvents(io) {
         console.log('User Connected', socket.id)
 
         //Send room_name as invite_code and userId as current user Id with socket request as joinRoom
-        socket.on('joinRoom', async (room_name, userId) => {
+        socket.once('joinRoom', async (room_name, userId) => {
             //Once user creates a challenge a room is created and once someone joins the challenge user is added to room
 
             // the room_name is invite code if room exits or not validation is performed at frontend
@@ -13,6 +13,7 @@ module.exports = function initializeSocketEvents(io) {
             // Another user tries to join room using invite code and hits /join-challenge and then if user joins room successfully then only joinRoom ws is triggered
 
             socket.join(room_name)
+            console.log(room_name)
             io.to(room_name).emit('newParticipants', `${userId} Joined the room`) // Get name from userId
         });
 

@@ -1,9 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 function verify(req, res, next) {
-    console.log("Middleware triggered")
     const authHeader = req.headers["authorization"];
-    console.log(authHeader)
     const token = authHeader && authHeader.split(' ')[1];
     
     if (!token) {
