@@ -7,10 +7,13 @@ import ProblemList from './ProblemList';
 
 import './Lobby.css'
 import { useAuth } from '../../Context/AuthContext';
+import { useSocket } from '../../Context/SocketContext';
 
 function Lobby() {
-    const [problems, setProblems] = useState([]);
     const user = useAuth();
+    const socket = useSocket();
+    
+    const [problems, setProblems] = useState([]);
     const { state } = useLocation();
     const room = state.room
     const [selectedProblem, setSelectedProblem] = useState();
@@ -28,6 +31,10 @@ function Lobby() {
 
     useEffect(() => {
         // console.log(user)
+        if(socket){
+            console.log('Socket connected:', socket);
+        }        
+
         const fetchData = async () => {
             try {
                 const response = await axios.get('api/problem/problems', {
@@ -43,7 +50,7 @@ function Lobby() {
             }
         };
         fetchData();
-    }, [user.user.token]);
+    }, [user.user.token, socket]);
 
     return (
         <div>
@@ -55,6 +62,9 @@ function Lobby() {
                 <div className="room-info">
                     <div className="state-button">
                         <h2>{room.challenge_name}</h2>
+                        <p>
+                            Invite Code : {room.invite_code}
+                        </p>
                     </div>
                     <div className="players">
                         <div className='player'>

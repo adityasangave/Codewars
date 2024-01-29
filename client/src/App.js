@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Register from './Components/Auth/Register';
 import Login from './Components/Auth/Login';
 import { AuthProvider } from './Context/AuthContext';
+import { SocketProvider } from './Context/SocketContext';
 import { useAuth } from './Context/AuthContext';
 import Lobby from './Components/Room/Lobby';
 import Details from './Components/Room/Details';
@@ -19,6 +20,7 @@ function App() {
   }
   return (
     <AuthProvider>
+      <SocketProvider>
       <div className="App">
         <BrowserRouter>
           <Routes>
@@ -57,6 +59,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </div>
+      </SocketProvider>
     </AuthProvider>
   );
 }
