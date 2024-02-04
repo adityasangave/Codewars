@@ -20,7 +20,7 @@ const Challenge = new mongoose.Schema({
     },
     invite_code : {
         type: String,
-        default : generateCode()
+        default : generateCode
     },
     created_by : {
         type : Schema.Types.ObjectId,
