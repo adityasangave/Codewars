@@ -30,12 +30,10 @@ function CreateChallenge() {
         }
       );
       if (response.status === 200) {
-        console.log(response.data.challenge)
-        
         const newInviteCode = response.data.challenge.invite_code;
         setInviteCode(newInviteCode);
         setInviteCodeVisible(true);
-        
+
         setRoom(response.data.challenge)
         localStorage.setItem('room', JSON.stringify(response.data.challenge)) // Save room to localstorage for recovery purposes
       } else {
@@ -65,7 +63,7 @@ function CreateChallenge() {
           <div className="invite_code">Invite Code: {inviteCode}</div>
         )}
         {inviteCodeVisible ? (
-          <button className="go-to-room" onClick={() => navigate(`/room/${room._id}`, {state : {room}})}>
+          <button className="go-to-room" onClick={() => navigate(`/room/${room._id}`, { state: { room } })}>
             Go to Room
           </button>
         ) : (

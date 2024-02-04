@@ -65,6 +65,10 @@ module.exports = function initializeSocketEvents(io) {
             }
         })
 
+        socket.on('modifyProblem', (room_name, problem_name)=>{
+            console.log("problem is selected", problem_name)
+            socket.to(room_name).emit('problemUpdated', problem_name)
+        })
         
     })
 };
