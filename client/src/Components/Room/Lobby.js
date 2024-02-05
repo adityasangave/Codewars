@@ -14,11 +14,13 @@ function Lobby() {
     const user = useAuth();
 
     const [problems, setProblems] = useState([]);
+    const [selectedProblem, setSelectedProblem] = useState();
+    const [socket, setSocket] = useState(null);
+    const [joinedParticipants, setJoinedParticipants] = useState([]);
+
     const { state } = useLocation();
     const room = state.room;
-    const [selectedProblem, setSelectedProblem] = useState();
     const navigate = useNavigate();
-    const [socket, setSocket] = useState(null); 
 
     const handleProblemClicked = (id) => {
         navigate(`/details/${id}`);
@@ -39,10 +41,34 @@ function Lobby() {
 
     useEffect(() => {
         const newSocket = io('http://localhost:8000');
-
-        setSocket(newSocket);
+        setSocket(newSocket)
         newSocket.on('connect', () => {
             console.log('Connected:', newSocket.id);
+
+            // Add joinRoom functionality
+            newSocket.emit('joinRoom', room.invite_code, user.user.name);
+
+            const handleNewParticipants = (data) => {
+                // show a classy dialogue when this occurs
+                alert(`${data} Joined the room`);
+            };
+
+            newSocket.on('newParticipants', handleNewParticipants);
+
+            newSocket.emit('getParticipants', room.invite_code);
+
+            const handleGetParticipants = (data) => {
+                console.log(data);
+                setJoinedParticipants(data);
+                console.log(joinedParticipants);
+            };
+
+            const handleGetParticipantsFailed=(data)=>{
+                console.log("failed"+data)
+            }
+            newSocket.on('participants', handleGetParticipants);
+            newSocket.on('failed', handleGetParticipantsFailed);
+
         });
 
         return () => {
@@ -50,32 +76,7 @@ function Lobby() {
                 newSocket.disconnect();
             }
         };
-    }, []);
-
-    useEffect(() => {
-        const joinRoom = () => {
-            if (socket) {
-                socket.emit('joinRoom', room.invite_code, user.user.name);
-                const handleNewParticipants = (data) => {
-                    // show a classy dialogue when this occurs
-                    alert(data);
-                    console.log(data);
-                };
-
-                socket.once('newParticipants', handleNewParticipants);
-            }
-        };
-
-        console.log("rendering useEffect with", socket);
-        joinRoom();
-
-        return () => {
-            if (socket) {
-                socket.off('joinRoom');
-                socket.off('newParticipants');
-            }
-        };
-    }, [socket, room.invite_code, user.user.name]);
+    }, [room.invite_code, user.user.name])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -110,14 +111,12 @@ function Lobby() {
                         </p>
                     </div>
                     <div className="players">
-                        <div className='player'>
-                            <FontAwesomeIcon icon={faUser} className='icon' />
-                            <h4 className="name">{user.user.name}</h4>
-                        </div>
-                        <div className='player'>
-                            <FontAwesomeIcon icon={faUser} className='icon' />
-                            <h4 className="name">{user.user.name}</h4>
-                        </div>
+                        {joinedParticipants.map((participant) => (
+                            <div key={participant._id} className='player'>
+                                <FontAwesomeIcon icon={faUser} className='icon' />
+                                <h4 className="name">{participant.name}</h4>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
