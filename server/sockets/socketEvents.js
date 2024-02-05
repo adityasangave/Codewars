@@ -17,9 +17,29 @@ module.exports = function initializeSocketEvents(io) {
             io.to(room_name).emit('newParticipants', userId) // Get name from userId
         });
 
+        socket.on('roomLeave', async ( room_name, user_id ) => {
+            console.log("user left", room_name)
+            try {
+                let challenge = await Challenge.findOne({ invite_code: room_name });
+                if (!challenge) {
+                    socket.emit('roomNotFound', 'No room exists');
+                    return;
+                }
+        
+                // Remove user_id from participants array
+                challenge.participants.pull(user_id);
+                await challenge.save();
+                
+                io.to(room_name).emit('userLeft', user_id);
+                socket.leave(room_name)
+            } catch (error) {
+                console.error("Error leaving room:", error);
+                socket.emit('failed', 'Something went wrong');
+            }
+        });
+
         // to show how many participants are present in current room
         socket.on('getParticipants', async (room_name) => {
-            console.log("getting participants")
             try {
                 let challenge = await Challenge.findOne({ invite_code: room_name });
                 if (!challenge) {
@@ -30,8 +50,6 @@ module.exports = function initializeSocketEvents(io) {
                 let users = challenge.participants; // array of uid
                 let participants = await User.find({ _id: { $in: users } })
                 let formattedParticipants = participants.map(({ _id, name, email }) => ({ id: _id, name, email }));
-
-                console.log("formatted participants", formattedParticipants);
                 io.to(room_name).emit('participants', formattedParticipants);
             } catch (error) {
                 io.to(room_name).emit('failed', 'Something went wrong');
@@ -73,7 +91,7 @@ module.exports = function initializeSocketEvents(io) {
 
         socket.on('modifyProblem', (room_name, problem_name) => {
             console.log("problem is selected", problem_name)
-            socket.to(room_name).emit('problemUpdated', problem_name)
+            io.to(room_name).emit('problemUpdated', problem_name)
         })
 
     })

@@ -6,7 +6,6 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 import ProblemList from './ProblemList';
 
 import { io } from 'socket.io-client';
-
 import './Lobby.css'
 import { useAuth } from '../../Context/AuthContext';
 
@@ -15,7 +14,7 @@ function Lobby() {
 
     const [problems, setProblems] = useState([]);
     const [selectedProblem, setSelectedProblem] = useState();
-    const [socket, setSocket] = useState(null);
+    const [socket, setSocket] = useState();
     const [joinedParticipants, setJoinedParticipants] = useState([]);
 
     const { state } = useLocation();
@@ -27,21 +26,39 @@ function Lobby() {
     };
 
     const handleProblemSelect = (id) => {
-        console.log(id);
         const selected = problems.find((problem) => id === problem._id);
-        if (selectedProblem && selectedProblem._id === id) {
+        console.log(selected);
+
+        if (selectedProblem) {
             setSelectedProblem(null);
             socket.emit('modifyProblem', room.invite_code, null);
         } else {
-            setSelectedProblem(selected);
             console.log(selectedProblem);
             socket.emit('modifyProblem', room.invite_code, selected.name);
         }
     };
 
+    // socket.on('problemUpdated', (data)=>{
+    //     console.log(data);
+    //     setSelectedProblem(data)
+    // });
+
+    const handleRoomLeave=()=>{
+        console.log("Left", room.invite_code)
+
+        const handleUserLeftRoom=(data)=>{
+            alert(`${data} Left the room`)
+            navigate('/');
+        }
+
+        socket.emit('roomLeave', room.invite_code, user.user.id);
+        socket.on('userLeft', handleUserLeftRoom);
+    }
+
     useEffect(() => {
         const newSocket = io('http://localhost:8000');
         setSocket(newSocket)
+        console.log("Connected ", newSocket)
         newSocket.on('connect', () => {
             console.log('Connected:', newSocket.id);
 
@@ -60,7 +77,6 @@ function Lobby() {
             const handleGetParticipants = (data) => {
                 console.log(data);
                 setJoinedParticipants(data);
-                console.log(joinedParticipants);
             };
 
             const handleGetParticipantsFailed=(data)=>{
@@ -96,10 +112,13 @@ function Lobby() {
         fetchData();
     }, [user.user.token]);
 
-    return (
-        <div>
+  return (
+    <div>
             <div className="container">
-                <div className="heading">Codewars</div>
+                <div className="heading">
+                    <div className='heading-text'>Codewars</div>
+                    <button className="leave" onClick={handleRoomLeave}>Leave</button>
+                </div>
                 <div className="sub-heading">Choose a Problem Statement</div>
                 {/* other components */}
 
@@ -126,7 +145,7 @@ function Lobby() {
                 {selectedProblem ?
                     <div className='selected-content'>
                         <div>
-                            <h3>{selectedProblem.name}</h3>
+                            <h3>{selectedProblem}</h3>
                         </div>
                         <div>
                             {room.created_by === user.user.id ?
@@ -142,9 +161,29 @@ function Lobby() {
             </div>
 
         </div>
-    );
+  )
 }
 
-export default Lobby;
+export default Lobby
+
+
+// function Lobby() {
+//     
+
+    
+    
+
+    
+
+    
+
+    
+
+//     return (
+        
+//     );
+// }
+
+// export default Lobby;
 
 

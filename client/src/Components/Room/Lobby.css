@@ -6,7 +6,19 @@
     display: flex;
     font-size: 60px;
     justify-content: center;
+    align-items: center;
+    width: 100%;
 }
+
+.heading-text{
+    align-items: center;
+}
+
+.leave{
+    position: absolute;
+    right: 10px;
+}
+
 .sub-heading{
     margin: 20px 0px;
     font-size: 20px;
