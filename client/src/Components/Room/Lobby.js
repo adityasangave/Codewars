@@ -38,10 +38,6 @@ function Lobby() {
         }
     };
 
-    // socket.on('problemUpdated', (data)=>{
-    //     console.log(data);
-    //     setSelectedProblem(data)
-    // });
 
     const handleRoomLeave=()=>{
         console.log("Left", room.invite_code)
@@ -111,6 +107,17 @@ function Lobby() {
         };
         fetchData();
     }, [user.user.token]);
+
+    useEffect(() => {
+        socket.on('problemUpdated', (data)=>{
+            console.log(data);
+            setSelectedProblem(data)
+        });
+    
+      return () => {
+        socket.off('problemUpdated');
+      }
+    }, [socket])
 
   return (
     <div>
