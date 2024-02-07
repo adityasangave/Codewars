@@ -78,6 +78,12 @@ function Lobby() {
             const handleGetParticipantsFailed=(data)=>{
                 console.log("failed"+data)
             }
+
+            newSocket.on('problemUpdated', (data)=>{
+                console.log(data);
+                setSelectedProblem(data)
+            });
+
             newSocket.on('participants', handleGetParticipants);
             newSocket.on('failed', handleGetParticipantsFailed);
 
@@ -108,16 +114,13 @@ function Lobby() {
         fetchData();
     }, [user.user.token]);
 
-    useEffect(() => {
-        socket.on('problemUpdated', (data)=>{
-            console.log(data);
-            setSelectedProblem(data)
-        });
+    // useEffect(() => {
+        
     
-      return () => {
-        socket.off('problemUpdated');
-      }
-    }, [socket])
+    //   return () => {
+    //     socket.off('problemUpdated');
+    //   }
+    // })
 
   return (
     <div>
